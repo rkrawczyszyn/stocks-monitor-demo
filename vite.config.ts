@@ -10,6 +10,9 @@ export default defineConfig({
       process: "process/browser",
     },
   },
+  build: {
+    outDir: "build",
+  },
   optimizeDeps: {
     esbuildOptions: {
       define: {

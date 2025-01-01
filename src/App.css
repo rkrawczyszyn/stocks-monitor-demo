@@ -3,6 +3,8 @@ body {
   margin: 0;
   padding: 20px;
   background-color: #f8f9fa;
+  flex: 1;
+  align-items: flex-start;
 }
 
 .table {
@@ -20,4 +22,27 @@ body {
 
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: #f2f2f2;
+}
+
+.App {
+  padding: 20px;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1000;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  cursor: pointer;
 }

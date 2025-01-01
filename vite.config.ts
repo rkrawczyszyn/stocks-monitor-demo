@@ -10,6 +10,7 @@ export default defineConfig({
       process: "process/browser",
     },
   },
+  base: "/stocks-monitor-demo/",
   build: {
     outDir: "build",
   },

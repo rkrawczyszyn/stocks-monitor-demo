@@ -9,9 +9,14 @@ enum ShareType {
 interface AttractiveStock {
   stockCode: string;
   stockName: string;
-  attractivePriceMax: number;
-  attractivePriceMin: number;
+  absoluteMin: number;
+  absoluteMax: number;
   currentPrice: number;
+  periodStart: string;
+  periodEnd: string;
+  attractivePriceStart: number;
+  attractivePriceUberLow: number;
+  percentageProgressToAttractivePriceStart: number;
   url: string;
   type: ShareType;
 }
@@ -36,8 +41,8 @@ export const AttractiveStockTable: React.FC = () => {
 
   const toggleSort = () => {
     const sortedStocks = [...stocks].sort((a, b) => {
-      const diffA = Math.abs(a.currentPrice - a.attractivePriceMin);
-      const diffB = Math.abs(b.currentPrice - b.attractivePriceMin);
+      const diffA = Math.abs(100 - a.percentageProgressToAttractivePriceStart);
+      const diffB = Math.abs(100 - b.percentageProgressToAttractivePriceStart);
       return sortMode === "Closest" ? diffB - diffA : diffA - diffB;
     });
 
@@ -60,9 +65,10 @@ export const AttractiveStockTable: React.FC = () => {
             <th>Code</th>
             <th>Name</th>
             <th>Share Type</th>
-            <th>Attractive Price Max</th>
-            <th>Attractive Price Min</th>
+            <th>Attractive price uber low</th>
+            <th>Attractive price start (APS)</th>
             <th>Current Price</th>
+            <th>Progress to APS</th>
             <th>Link</th>
           </tr>
         </thead>
@@ -74,19 +80,20 @@ export const AttractiveStockTable: React.FC = () => {
               <td>{stock.type === ShareType.Stock ? "Stock" : "Coin"}</td>
               <td>
                 {stock.type === ShareType.Stock
-                  ? Number(stock.attractivePriceMax.toFixed(2))
-                  : Number(stock.attractivePriceMax.toFixed(8))}
+                  ? Number(stock.attractivePriceUberLow.toFixed(2))
+                  : Number(stock.attractivePriceUberLow.toFixed(8))}
               </td>
               <td>
                 {stock.type === ShareType.Stock
-                  ? Number(stock.attractivePriceMin.toFixed(2))
-                  : Number(stock.attractivePriceMin.toFixed(8))}
+                  ? Number(stock.attractivePriceStart.toFixed(2))
+                  : Number(stock.attractivePriceStart.toFixed(8))}
               </td>
               <td>
                 {stock.type === ShareType.Stock
                   ? Number(stock.currentPrice.toFixed(2))
                   : Number(stock.currentPrice.toFixed(8))}
               </td>
+              <td>{stock.percentageProgressToAttractivePriceStart} %</td>
               <td>
                 <a href={stock.url} target="_blank" rel="noopener noreferrer">
                   <button>Open details</button>

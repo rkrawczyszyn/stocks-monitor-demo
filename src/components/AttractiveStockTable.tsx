@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 
 enum ShareType {
   Stock,
@@ -18,6 +18,7 @@ interface AttractiveStock {
 
 export const AttractiveStockTable: React.FC = () => {
   const [stocks, setStocks] = useState<AttractiveStock[]>([]);
+  const [sortMode, setSortMode] = useState<"Closest" | "Farthest">("Closest");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,8 +34,26 @@ export const AttractiveStockTable: React.FC = () => {
     fetchData();
   }, []);
 
+  const toggleSort = () => {
+    const sortedStocks = [...stocks].sort((a, b) => {
+      const diffA = Math.abs(a.currentPrice - a.attractivePriceMin);
+      const diffB = Math.abs(b.currentPrice - b.attractivePriceMin);
+      return sortMode === "Closest" ? diffB - diffA : diffA - diffB;
+    });
+
+    setSortMode((prevMode) =>
+      prevMode === "Closest" ? "Farthest" : "Closest"
+    );
+    setStocks(sortedStocks);
+  };
+
   return (
     <div className="table-responsive">
+      <div className="mb-3">
+        <Button onClick={toggleSort}>
+          Sort: {sortMode === "Closest" ? "Closest" : "Farthest"}
+        </Button>
+      </div>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -52,10 +71,22 @@ export const AttractiveStockTable: React.FC = () => {
             <tr key={index}>
               <td>{stock.stockCode}</td>
               <td>{stock.stockName}</td>
-              <td>{stock.type === 0 ? "Stock" : "Coin"}</td>
-              <td>{stock.attractivePriceMax.toFixed(2)}</td>
-              <td>{stock.attractivePriceMin.toFixed(2)}</td>
-              <td>{stock.currentPrice.toFixed(2)}</td>
+              <td>{stock.type === ShareType.Stock ? "Stock" : "Coin"}</td>
+              <td>
+                {stock.type === ShareType.Stock
+                  ? Number(stock.attractivePriceMax.toFixed(2))
+                  : Number(stock.attractivePriceMax.toFixed(8))}
+              </td>
+              <td>
+                {stock.type === ShareType.Stock
+                  ? Number(stock.attractivePriceMin.toFixed(2))
+                  : Number(stock.attractivePriceMin.toFixed(8))}
+              </td>
+              <td>
+                {stock.type === ShareType.Stock
+                  ? Number(stock.currentPrice.toFixed(2))
+                  : Number(stock.currentPrice.toFixed(8))}
+              </td>
               <td>
                 <a href={stock.url} target="_blank" rel="noopener noreferrer">
                   <button>Open details</button>

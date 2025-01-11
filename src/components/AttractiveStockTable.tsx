@@ -41,9 +41,11 @@ export const AttractiveStockTable: React.FC = () => {
 
   const toggleSort = () => {
     const sortedStocks = [...stocks].sort((a, b) => {
-      const diffA = Math.abs(100 - a.percentageProgressToAttractivePriceStart);
-      const diffB = Math.abs(100 - b.percentageProgressToAttractivePriceStart);
-      return sortMode === "Closest" ? diffB - diffA : diffA - diffB;
+      return sortMode === "Closest"
+        ? a.percentageProgressToAttractivePriceStart -
+            b.percentageProgressToAttractivePriceStart
+        : b.percentageProgressToAttractivePriceStart -
+            a.percentageProgressToAttractivePriceStart;
     });
 
     setSortMode((prevMode) =>
@@ -93,7 +95,9 @@ export const AttractiveStockTable: React.FC = () => {
                   ? Number(stock.currentPrice.toFixed(2))
                   : Number(stock.currentPrice.toFixed(8))}
               </td>
-              <td>{stock.percentageProgressToAttractivePriceStart} %</td>
+              <td>
+                {stock.percentageProgressToAttractivePriceStart.toFixed(0)}%
+              </td>
               <td>
                 <a href={stock.url} target="_blank" rel="noopener noreferrer">
                   <button>Open details</button>

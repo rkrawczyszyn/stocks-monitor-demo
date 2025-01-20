@@ -29,7 +29,7 @@ export const AttractiveStockTable: React.FC = () => {
     const fetchData = async () => {
       const stockData = (await (
         await fetch(
-          "https://raw.githubusercontent.com/rkrawczyszyn/demos/refs/heads/main/dist/custom-stock-watch-results.json"
+          "https://raw.githubusercontent.com/rkrawczyszyn/demos/refs/heads/main/dist/apps/customStocks/custom-stock-watch-results.json"
         )
       ).json()) as AttractiveStock[];
 
